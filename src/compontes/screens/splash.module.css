@@ -16,6 +16,15 @@
   }
 }
 
-.splash_animate {
-  animation: splash_animate 10s ease infinite;
+@media screen and (max-width: 768px){
+  .splash_animate {
+    animation: splash_animate 10s ease infinite;
+    width: 60%;
+  }  
 }
+
+  .splash_animate {
+    animation: splash_animate 15s ease infinite;
+  }
+
+

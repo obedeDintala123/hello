@@ -6,7 +6,7 @@ const Splash = () => {
 
     return (
         <div className="w-screen h-screen flex justify-center items-center" id="splash">
-            <img src={Logo} alt="Hello Logo" className={style.splash_animate} />
+            <img src={Logo} alt="Hello Logo" className={style.splash_animate}/>
         </div>
     )
 }
