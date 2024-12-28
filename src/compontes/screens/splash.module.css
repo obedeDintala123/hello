@@ -1,0 +1,21 @@
+@keyframes splash_animate {
+  0% {
+    transform: scale(0.5);
+  }
+  25% {
+    transform: scale(0.7);
+  }
+  50% {
+    transform: scale(0.5);
+  }
+  75% {
+    transform: scale(0.7);
+  }
+  100% {
+    transform: scale(0.5);
+  }
+}
+
+.splash_animate {
+  animation: splash_animate 10s ease infinite;
+}
