@@ -20,7 +20,7 @@ const SignUpThree = () => {
     e.preventDefault();
     setLoading(true);
     setTimeout(() => {
-      FetchCreate('http://localhost/hello-Backend/CrateUser.php', 'POST', formData);
+      FetchCreate('http://localhost/hello-Backend/CreateUser.php', 'POST', formData);
     }, 1000)
   };
 

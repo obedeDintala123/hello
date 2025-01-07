@@ -81,7 +81,7 @@ const SignIn = () => {
         <Input type="password" placeholder="Senha" name="password" id="password"  handleOnchange={handleOnchange}/>
         <Button
           type="submit"
-          text="Sign In"
+          text={loading ? "Processando..." : "Sign In"}
           name="signInButton"
           id="signInButton"
         />
