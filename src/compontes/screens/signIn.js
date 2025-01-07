@@ -1,34 +1,70 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import logo from "../../assents/img/hello_logo.svg";
 
 import Input from "./formComponents/Input";
 import Button from "./formComponents/Button";
+import Message from "../modal/Message";
+import Loader from "../modal/Loader";
 const SignIn = () => {
+  const navigate = useNavigate();
+  const [signInData, setSignInData] = useState({
+    email: "",
+    password: "",
+  });
 
-  const [signInData, setSignInData] = useState([]);
-  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [users, setUsers] = useState(null);
+  const [showModal, setShowModal] = useState(false);
 
   const submit = (e) => {
     e.preventDefault();
-    console.log(signInData);
-  } 
+    setLoading(true);
+    if (signInData.email && signInData.password) {
+      fetch("http://localhost/hello-Backend/ReadUser.php", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email: signInData.email,
+          password: signInData.password,
+        }),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          setMessage(data.message);
+          if (data.UserState) {
+            setLoading(false);
+            setUsers(data.user); 
+            navigate("/feed");
+          }
+          else {
+            setLoading(false);
+            setShowModal(true);
+            setTimeout(() => {
+              setShowModal(false);
+            }, 2500);
+          }
+        })
+        .catch((error) => console.error("Erro ao fazer login:", error));
+    } else {
+      setMessage("Preencha todos os campos.");
+    }
+  };
 
   const handleOnchange = (e) => {
     setSignInData({...signInData, [e.target.name]: e.target.value});
   }
 
-  useEffect(() => {
-    fetch("http://localhost:5000/Users")
-    .then((response) => response.json())
-    .then((data) => setUsers(data))
-    .catch((error) => console.error(error))
-  }, []);
-
   return (
-    <form onSubmit={submit} method="POST" className="lg:w-3/12 flex flex-col gap-6 justify-between p-3 border shadow absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-11/12 sm:w-11/12 md:w-3/5">
+    <>
+    <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 flex justify-center items-center">
+    {loading && <Loader />}
+    </div>
+    {showModal && <Message message={message} />}
+      <form onSubmit={submit} method="POST" className="lg:w-3/12 flex flex-col gap-6 justify-between p-3 border shadow absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-sm:w-11/12 sm:w-11/12 md:w-3/5">
       <div className="flex flex-col gap-6">
         <img src={logo} alt="logo" className="w-20 text-center" />
         <h1 className="text-2xl font-medium">Sign In</h1>
@@ -58,21 +94,18 @@ const SignIn = () => {
         </Link>
       </p>
 
-      {users ? (
+      {users && (
         <div>
-          <h1>Usuários</h1>
+          <h1>Usuário Logado:</h1>
           <ul>
-            {users.find((user) => user.email === signInData.email && user.password === signInData.password) ? (
-              <li>Usuário encontrado</li>
-            ) : (
-              <li>Usuário não encontrado</li>
-            )}
+            <li>{users.nome}</li>
+            <li>{users.email}</li>
+            <li>{users.numero}</li>
           </ul>
         </div>
-      ) : (
-        null
       )}
     </form>
+    </>
   );
 };
 

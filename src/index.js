@@ -13,6 +13,8 @@ import SignUpOne from "./compontes/screens/signUp_screen/signUpOne";
 import SignUpTwo from "./compontes/screens/signUp_screen/signUpTwo";
 import SignUpThree from "./compontes/screens/signUp_screen/signUpThree";
 
+import Feed from "./compontes/pages/Feed";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -29,6 +31,10 @@ const router = createBrowserRouter([
         ]
       }
     ]
+  },
+  {
+    path: "/feed",
+    element: <Feed />
   }
 ]);
 

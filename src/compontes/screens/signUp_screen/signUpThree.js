@@ -2,10 +2,11 @@ import logo from "../../../assents/img/hello_logo.svg";
 
 import Input from "../formComponents/Input";
 import Button from "../formComponents/Button";
+import Loader from '../../modal/Loader';
 
 import "../../../assents/style/output.css";
 
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { FormContext } from "../../../context/FormContext";
@@ -13,25 +14,16 @@ import { FormContext } from "../../../context/FormContext";
 const SignUpThree = () => {
   const { formData, setFormData } = useContext(FormContext);
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
 
   const submit = (e) => {
     e.preventDefault();
-    FetchCreate('http://localhost:5000/Users', 'POST', formData);
-    navigate("/");
+    setLoading(true);
+    FetchCreate('http://localhost/hello-Backend/CrateUser.php', 'POST', formData);
   };
 
   const handleOnchange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
-    formatedDate(e);
-  };
-
-  const formatedDate = (e) => {
-    const { name, value } = e.target;
-
-    if (name === "date" && value) {
-      const formatedDate = value.split("-").reverse().join("/");
-      setFormData({ ...formData, [name]: formatedDate });
-    }
   };
 
   const handleClick = (e) => {
@@ -46,17 +38,33 @@ const SignUpThree = () => {
     fetch(url, {
       method: method,
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data)
+      body: JSON.stringify({nome: data.nome, email: data.email, password: data.password, date: data.date, number: data.number})
     })
       .then((response) => response.json())
-      .then((data) => console.log(data))
-      .catch((error) => console.log(error));
+      .then((data) => {
+        if (data.UserState) {
+          setLoading(false);
+          navigate("/feed");
+        }
+        else {
+          setLoading(true);
+        }
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+        setLoading(false);
+      });
   };
 
   return (
-    <div className="flex flex-col gap-14 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-3/12 max-sm:w-11/12 sm:w-11/12 md:w-3/5">
-      <img src={logo} alt="logo" className="w-20 text-center" />
 
+    <div className="flex flex-col gap-14 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 lg:w-3/12 max-sm:w-11/12 sm:w-11/12 md:w-3/5">
+
+<div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 flex justify-center items-center">
+    {loading && <Loader />}
+    </div>
+
+      <img src={logo} alt="logo" className="w-20 text-center" />
       <form
         onSubmit={submit}
         className="flex flex-col gap-5 justify-between border shadow p-3"
