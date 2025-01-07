@@ -19,7 +19,9 @@ const SignUpThree = () => {
   const submit = (e) => {
     e.preventDefault();
     setLoading(true);
-    FetchCreate('http://localhost/hello-Backend/CrateUser.php', 'POST', formData);
+    setTimeout(() => {
+      FetchCreate('http://localhost/hello-Backend/CrateUser.php', 'POST', formData);
+    }, 1000)
   };
 
   const handleOnchange = (e) => {
