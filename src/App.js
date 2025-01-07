@@ -1,8 +1,10 @@
 import {useState, useEffect} from 'react';
+import { Outlet } from 'react-router-dom';
 
 import Splash from './compontes/screens/splash';
 
-import SignIn from './compontes/screens/signIn';
+import {FormProvider} from './context/FormContext'
+
 function App() {
   const [splashVisible, setSplashVisible] = useState(true);
 
@@ -19,12 +21,10 @@ function App() {
   }, [])
 
   return (
-    <>
-     {
-        splashVisible ? <Splash /> : <SignIn />
-     }
-    </>
-  );
+   <FormProvider>
+   {splashVisible ? <Splash /> : <Outlet />}
+   </FormProvider>
+  )
 }
 
 export default App;
