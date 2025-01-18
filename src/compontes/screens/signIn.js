@@ -84,6 +84,7 @@ const SignIn = () => {
           text={loading ? "Processando..." : "Sign In"}
           name="signInButton"
           id="signInButton"
+          disabled={true}
         />
       </div>
 

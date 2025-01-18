@@ -1,10 +1,14 @@
-import '../.././assents/style/output.css';
+import "../.././assents/style/output.css";
+
+import Header from "../layout/Header";
+import Main from "../layout/Main";
 const Feed = () => {
-    return (
-        <div>
-            <h1 className='text-3xl p-3'>Bem-vindo ao Feed de Publicações</h1>
-        </div>
-    )
-}
+  return (
+    <>
+      <Header />
+      <Main />
+    </>
+  );
+};
 
 export default Feed;
